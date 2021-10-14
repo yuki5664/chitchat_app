@@ -20,7 +20,9 @@ func err(writer http.ResponseWriter, request *http.Request) {
 }
 
 func index(writer http.ResponseWriter, request *http.Request) {
+	// threadsにDBから取得したthreadsの情報を返している。
 	threads, err := data.Threads()
+	// errがある場合は、error_messageを添えてerrページにredirectする
 	if err != nil {
 		error_message(writer, request, "Cannot get threads")
 	} else {
