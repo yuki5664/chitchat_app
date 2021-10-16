@@ -36,12 +36,12 @@ func (thread *Thread) NumReplies() (count int) {
 	if err != nil {
 		return
 	}
+	defer rows.Close()
 	for rows.Next() {
 		if err = rows.Scan(&count); err != nil {
 			return
 		}
 	}
-	rows.Close()
 	return
 }
 
@@ -51,6 +51,7 @@ func (thread *Thread) Posts() (posts []Post, err error) {
 	if err != nil {
 		return
 	}
+	defer rows.Close()
 	for rows.Next() {
 		post := Post{}
 		if err = rows.Scan(&post.Id, &post.Uuid, &post.Body, &post.UserId, &post.ThreadId, &post.CreatedAt); err != nil {
@@ -58,7 +59,6 @@ func (thread *Thread) Posts() (posts []Post, err error) {
 		}
 		posts = append(posts, post)
 	}
-	rows.Close()
 	return
 }
 
@@ -94,6 +94,7 @@ func Threads() (threads []Thread, err error) {
 	if err != nil {
 		return
 	}
+	defer rows.Close()
 	for rows.Next() {
 		conv := Thread{}
 		if err = rows.Scan(&conv.Id, &conv.Uuid, &conv.Topic, &conv.UserId, &conv.CreatedAt); err != nil {
@@ -101,7 +102,6 @@ func Threads() (threads []Thread, err error) {
 		}
 		threads = append(threads, conv)
 	}
-	rows.Close()
 	return
 }
 
