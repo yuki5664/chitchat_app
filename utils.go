@@ -55,6 +55,7 @@ func loadConfig() {
 // Convenience function to redirect to the error message page
 func error_message(writer http.ResponseWriter, request *http.Request, msg string) {
 	url := []string{"/err?msg=", msg}
+	// 第3引数のurlに指定されているrequest pathをredirectする
 	http.Redirect(writer, request, strings.Join(url, ""), 302)
 }
 
@@ -89,6 +90,7 @@ func generateHTML(writer http.ResponseWriter, data interface{}, filenames ...str
 	}
 
 	templates := template.Must(template.ParseFiles(files...))
+	// ExecuteTemplateでlayoutにdataで必要なパラメーターを渡している
 	templates.ExecuteTemplate(writer, "layout", data)
 }
 
