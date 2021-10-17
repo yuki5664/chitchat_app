@@ -28,8 +28,10 @@ func (user *User) CreateSession() (session Session, err error) {
 	if err != nil {
 		return
 	}
+	// 途中で処理が失敗してもDBとのコネクションをcloseできるように事前にcloseをdeferで遅延実行できるようにする
 	defer stmt.Close()
 	// use QueryRow to return a row and scan the returned id into the Session struct
+	// 最大1行のqueryが実行される。
 	err = stmt.QueryRow(createUUID(), user.Email, user.Id, time.Now()).Scan(&session.Id, &session.Uuid, &session.Email, &session.UserId, &session.CreatedAt)
 	return
 }
